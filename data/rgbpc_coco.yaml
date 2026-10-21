@@ -1,3 +1,4 @@
+path: ..
 train: ./dataset/rgbpc/train
 val: ./dataset/rgbpc/test
 test: ./dataset/rgbpc/test

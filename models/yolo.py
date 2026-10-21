@@ -9,7 +9,7 @@ from collections import OrderedDict
 import torch
 import torch.nn as nn
 
-from models.common import Conv, SPPCSPC, Concat, ImplicitA, ImplicitM, RepConv, NMS, IndexDomains, \
+from models.common import Conv, SPPCSPC, Concat, MP, ImplicitA, ImplicitM, RepConv, NMS, IndexDomains, \
     FeatureSum, FeatureMul, ScharrEdge, FusePol, MPM3, MPM4, CDDS3F
 from utils.general import make_divisible
 from utils.autoanchor import check_anchor_order

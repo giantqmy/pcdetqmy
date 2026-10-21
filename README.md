@@ -54,6 +54,30 @@ Please cite our paper if you find it is useful:
 ### Dataset
 Both training set and testing set can be obtained via form request at [here](http://rgbp.dluticcd.com/).
 
+### Training from scratch
+Place the RGB-Polarization dataset under `AAAI24-PCDNet/dataset/rgbpc` with this layout:
+
+```text
+rgbpc/
+  train/                   # same layout for test/
+    images/<id>.tiff       # RGB
+    aolp/<id>_aolp.tiff
+    dolp/<id>_dolp.tiff
+    labels/<id>.txt        # YOLO: class x_center y_center width height
+```
+
+Run from any working directory with the repository's PyTorch environment:
+
+```bash
+python AAAI24-PCDNet/train.py --data AAAI24-PCDNet/data/rgbpc_coco.yaml
+```
+
+`train.py` reads the PCDNet architecture YAML embedded in the repository-level `PCDNet.pt`,
+then constructs a new model with random initialization. It does not load pretrained model
+weights. Use `--architecture` to point to another checkpoint containing the same embedded
+architecture, or `--device cpu` / `--device 0` to select a device. Training outputs are written
+to `AAAI24-PCDNet/runs/train/pcdnet_scratch`.
+
 ### Experiments
 **Test**: Download pre-trained ``PCDNet.pt`` at 
 [[Baidu Netdisk](https://pan.baidu.com/s/1Bjb6IeQuhbt1zvypJZ-cXQ?pwd=ujzb), 
