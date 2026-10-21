@@ -82,17 +82,20 @@ def split_images(split):
 
 def validate_labels(files, nc):
     count = 0
-    for file in files:
-        for line_no, line in enumerate(file.read_text(encoding="utf-8").splitlines(), 1):
+    for image in files:
+        split = image.parents[1]
+        relative = image.relative_to(split / "images")
+        label = split / "labels" / relative.with_suffix(".txt")
+        for line_no, line in enumerate(label.read_text(encoding="utf-8").splitlines(), 1):
             fields = line.split()
             if len(fields) != 5:
-                raise ValueError(f"{file}:{line_no}: expected 'class x y w h'")
+                raise ValueError(f"{label}:{line_no}: expected 'class x y w h'")
             values = np.asarray(fields, dtype=np.float32)
             cls = int(values[0])
             if values[0] != cls or cls < 0 or cls >= nc:
-                raise ValueError(f"{file}:{line_no}: class id {values[0]} outside [0, {nc - 1}]")
+                raise ValueError(f"{label}:{line_no}: class id {values[0]} outside [0, {nc - 1}]")
             if not np.isfinite(values).all() or (values[1:] < 0).any() or (values[1:] > 1).any():
-                raise ValueError(f"{file}:{line_no}: coordinates must be finite and normalized to [0, 1]")
+                raise ValueError(f"{label}:{line_no}: coordinates must be finite and normalized to [0, 1]")
             count += 1
     if count == 0:
         raise ValueError("No objects found in split labels")
